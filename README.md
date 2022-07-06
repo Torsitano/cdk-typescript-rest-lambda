@@ -1,14 +1,37 @@
-# Welcome to your CDK TypeScript project
+1. Clone Repo
+2. `npm i`
+3. `cdk deploy`
+4. Get the API key and URL from the API GW
+5. Postman:
 
-This is a blank project for CDK development with TypeScript.
+`POST`
+`x-api-key: <your-key>` // header
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+body:
 
-## Useful commands
+```
+{
+    "value1": "test",
+    "value2": 10
+}
+```
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+^ Make a couple entries
+
+`GET`
+`x-api-key: <your-key>` // header
+
+With no UUID provided, you should get all results back
+
+`GET`
+`x-api-key: <your-key>` // header
+`uuid: <a uuid from above>` // param
+
+You should get 1 result back
+
+6. ???
+7. Profit
+
+## NOTE
+
+Note there is an `asyncGet.ts` and `get.ts`, right now the `get.ts` is in use. Both are provided as examples in case you want to use one style over the other.
