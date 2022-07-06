@@ -1,4 +1,4 @@
-import { Aws, Duration, Stack, StackProps } from 'aws-cdk-lib'
+import { Aws, Duration, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib'
 import { EndpointType, LambdaIntegration, MethodLoggingLevel, RestApi } from 'aws-cdk-lib/aws-apigateway'
 import { AttributeType, BillingMode, Table, TableEncryption } from 'aws-cdk-lib/aws-dynamodb'
 import { Runtime } from 'aws-cdk-lib/aws-lambda'
@@ -88,7 +88,8 @@ export class CdkRestLambdaStack extends Stack {
             tableName: tableName,
             billingMode: BillingMode.PROVISIONED,
             readCapacity: 5,
-            writeCapacity: 5
+            writeCapacity: 5,
+            removalPolicy: RemovalPolicy.DESTROY
         } )
 
         // Allow the Lambdas to access the table

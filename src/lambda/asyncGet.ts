@@ -24,6 +24,8 @@ const docClient = DynamoDBDocumentClient.from( client )
  */
 
 
+type Item = Record<string, any>
+
 //@ts-ignore ignoring that context is not used
 export async function handler( event: APIGatewayEvent, context: APIGatewayEventRequestContext ): HttpResponse {
 
@@ -34,7 +36,7 @@ export async function handler( event: APIGatewayEvent, context: APIGatewayEventR
 
     if ( event.queryStringParameters?.uuid ) {
         await getItem( event.queryStringParameters.uuid )
-            .then( ( item ): HttpResponse => {
+            .then( ( item: Item ): HttpResponse => {
                 response.body = JSON.stringify( item )
                 response.statusCode = 200
                 return response
@@ -47,7 +49,7 @@ export async function handler( event: APIGatewayEvent, context: APIGatewayEventR
     }
     else {
         await getAllItems()
-            .then( ( items ) => {
+            .then( ( items: Item[] ): HttpResponse => {
                 response.body = JSON.stringify( items )
                 response.statusCode = 200
                 return response
@@ -62,7 +64,7 @@ export async function handler( event: APIGatewayEvent, context: APIGatewayEventR
 }
 
 
-async function getItem( uuid: string ) {
+async function getItem( uuid: string ): Promise<Item> {
 
     const item = await docClient.send(
         new GetCommand( {
@@ -80,7 +82,7 @@ async function getItem( uuid: string ) {
 }
 
 
-async function getAllItems() {
+async function getAllItems(): Promise<Item[]> {
 
     const items: Record<string, any>[] = []
 
