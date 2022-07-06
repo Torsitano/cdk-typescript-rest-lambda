@@ -18,14 +18,18 @@ body:
 
 ^ Make a couple entries
 
-`GET`
-`x-api-key: <your-key>` // header
+```
+GET
+x-api-key: <your-key> // header
+```
 
 With no UUID provided, you should get all results back
 
-`GET`
-`x-api-key: <your-key>` // header
-`uuid: <a uuid from above>` // param
+```
+GET
+x-api-key: <your-key> // header
+uuid: <a uuid from above> // param
+```
 
 You should get 1 result back
 
