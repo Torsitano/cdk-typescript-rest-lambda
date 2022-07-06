@@ -5,12 +5,12 @@
 5. Get the API key and URL from the API GW
 6. Postman:
 
-`POST`
-`x-api-key: <your-key>` // header
+```
+POST
+x-api-key: <your-key> // header
 
 body:
 
-```
 {
     "value1": "test",
     "value2": 10
