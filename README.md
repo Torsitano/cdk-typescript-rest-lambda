@@ -1,8 +1,9 @@
 1. Clone Repo
 2. `npm i`
-3. `cdk deploy`
-4. Get the API key and URL from the API GW
-5. Postman:
+3. Set the account number in `lib/main.ts`
+4. `cdk deploy`
+5. Get the API key and URL from the API GW
+6. Postman:
 
 `POST`
 `x-api-key: <your-key>` // header
@@ -33,8 +34,8 @@ uuid: <a uuid from above> // param
 
 You should get 1 result back
 
-6. ???
-7. Profit
+7. ???
+8. Profit
 
 ## NOTE
 

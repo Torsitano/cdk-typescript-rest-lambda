@@ -5,7 +5,7 @@ import { CdkRestLambdaStack } from './stacks/CdkRestLambdaStack'
 
 
 const devEnv = {
-    account: '698852667105',
+    account: '123456789012',
     region: 'us-east-1',
 }
 
