@@ -37,6 +37,3 @@ You should get 1 result back
 7. ???
 8. Profit
 
-## NOTE
-
-Note there is an `asyncGet.ts` and `get.ts`, right now the `get.ts` is in use. Both are provided as examples in case you want to use one style over the other.

@@ -16,16 +16,18 @@ const client = new DynamoDBClient( {
 const docClient = DynamoDBDocumentClient.from( client )
 
 
-
 /**
- * If you DON't want to use async/await in the hander it can be NON-async.
- * Even though the getItem() and getAllItems() functions are async, since the handler is not
- * the function won't return until they are finished fulfilling their promises.
+ * If you want this main function to be able to able to use async/await, it must be async
+ * You'll need await on the getItem() and getAllItems() calls because they are async, and
+ * if they are missing, the Lambda will return before the promises are fullfilled even though
+ * .then() is in use
  */
 
 
+type Item = Record<string, any>
+
 //@ts-ignore ignoring that context is not used
-export function handler( event: APIGatewayEvent, context: APIGatewayEventRequestContext ): HttpResponse {
+export async function handler( event: APIGatewayEvent, context: APIGatewayEventRequestContext ): HttpResponse {
 
     const response: HttpResponse = {
         statusCode: 400,
@@ -33,8 +35,8 @@ export function handler( event: APIGatewayEvent, context: APIGatewayEventRequest
     }
 
     if ( event.queryStringParameters?.uuid ) {
-        getItem( event.queryStringParameters.uuid )
-            .then( ( item ): HttpResponse => {
+        await getItem( event.queryStringParameters.uuid )
+            .then( ( item: Item ): HttpResponse => {
                 response.body = JSON.stringify( item )
                 response.statusCode = 200
                 return response
@@ -46,8 +48,8 @@ export function handler( event: APIGatewayEvent, context: APIGatewayEventRequest
 
     }
     else {
-        getAllItems()
-            .then( ( items ) => {
+        await getAllItems()
+            .then( ( items: Item[] ): HttpResponse => {
                 response.body = JSON.stringify( items )
                 response.statusCode = 200
                 return response
@@ -62,7 +64,7 @@ export function handler( event: APIGatewayEvent, context: APIGatewayEventRequest
 }
 
 
-async function getItem( uuid: string ) {
+async function getItem( uuid: string ): Promise<Item> {
 
     const item = await docClient.send(
         new GetCommand( {
@@ -80,7 +82,7 @@ async function getItem( uuid: string ) {
 }
 
 
-async function getAllItems() {
+async function getAllItems(): Promise<Item[]> {
 
     const items: Record<string, any>[] = []
 
