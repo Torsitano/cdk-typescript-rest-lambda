@@ -15,15 +15,6 @@ const client = new DynamoDBClient( {
 // https://github.com/aws/aws-sdk-js-v3/blob/main/lib/lib-dynamodb/README.md
 const docClient = DynamoDBDocumentClient.from( client )
 
-
-/**
- * If you want this main function to be able to able to use async/await, it must be async
- * You'll need await on the getItem() and getAllItems() calls because they are async, and
- * if they are missing, the Lambda will return before the promises are fullfilled even though
- * .then() is in use
- */
-
-
 type Item = Record<string, any>
 
 //@ts-ignore ignoring that context is not used
@@ -35,32 +26,31 @@ export async function handler( event: APIGatewayEvent, context: APIGatewayEventR
     }
 
     if ( event.queryStringParameters?.uuid ) {
-        await getItem( event.queryStringParameters.uuid )
-            .then( ( item: Item ): HttpResponse => {
-                response.body = JSON.stringify( item )
-                response.statusCode = 200
-                return response
-            } )
-            .catch( ( err ): HttpResponse => {
-                response.body = JSON.stringify( err )
-                return response
-            } )
+
+        try {
+            const item: Item = await getItem( event.queryStringParameters.uuid )
+            response.body = JSON.stringify( item )
+            response.statusCode = 200
+            return response
+
+        } catch ( err ) {
+            response.body = JSON.stringify( err )
+            return response
+        }
 
     }
     else {
-        await getAllItems()
-            .then( ( items: Item[] ): HttpResponse => {
-                response.body = JSON.stringify( items )
-                response.statusCode = 200
-                return response
-            } )
-            .catch( ( err ): HttpResponse => {
-                response.body = JSON.stringify( err )
-                return response
-            } )
-    }
+        try {
+            const items: Item[] = await getAllItems()
+            response.body = JSON.stringify( items )
+            response.statusCode = 200
+            return response
 
-    return response
+        } catch ( err ) {
+            response.body = JSON.stringify( err )
+            return response
+        }
+    }
 }
 
 
